@@ -1,5 +1,6 @@
 /*
  * 445 Database
+ * Ariel McNamara and Audrey
  */
 package BossViews;
 
