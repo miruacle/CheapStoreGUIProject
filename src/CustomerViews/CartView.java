@@ -2,6 +2,7 @@ package CustomerViews;
 /*
  * 445 Database
  * Ariel McNamara and Audrey
+ * 
  */
 import javax.swing.JPanel;
 import javax.swing.JButton;

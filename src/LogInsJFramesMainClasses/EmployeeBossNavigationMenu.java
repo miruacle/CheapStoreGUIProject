@@ -34,7 +34,10 @@ public class EmployeeBossNavigationMenu extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public EmployeeBossNavigationMenu() {
+	public EmployeeBossNavigationMenu( JButton logoutButton) {
+		
+		
+		
 		
 		setBounds(100, 100, 848, 471);
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -61,15 +64,8 @@ public class EmployeeBossNavigationMenu extends JPanel {
 		panel_1.setBackground(new Color(204, 102, 0));
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
-		JButton btnLogout = new JButton("LogOut");
-		btnLogout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				
-				
-			}
-		});
-		panel_1.add(btnLogout, BorderLayout.EAST);
+		
+		panel_1.add(logoutButton, BorderLayout.EAST);
 		
 		JButton button_1 = new JButton("Navigation Button");
 		button_1.addActionListener(new ActionListener() {
