@@ -20,6 +20,7 @@ import BossViews.StatisticsView;
 import CustomerViews.CartView;
 import CustomerViews.StoreView;
 import EmployeeViews.OrdersView;
+import model.UserAccount;
 
 public class EmployeeBossNavigationMenu extends JPanel {
 
@@ -28,14 +29,15 @@ public class EmployeeBossNavigationMenu extends JPanel {
 	private JPanel panel;
 	
 	private JPanel panel_2;
-	
+	private String typeOfAccount;
 
 	
 	/**
 	 * Create the panel.
 	 */
-	public EmployeeBossNavigationMenu( JButton logoutButton) {
+	public EmployeeBossNavigationMenu( JButton logoutButton, UserAccount currentUser) {
 		
+		this.typeOfAccount = currentUser.getTypeOfAccount();
 		
 		
 		
@@ -125,6 +127,7 @@ public class EmployeeBossNavigationMenu extends JPanel {
 		panel_4.add(btnNewButton_4);
 		
 		JLabel lblWelcomeEmployee = new JLabel("Welcome Employee");
+		lblWelcomeEmployee.setText("Welcome " + currentUser.getName() );
 		lblWelcomeEmployee.setBackground(new Color(204, 102, 0));
 		lblWelcomeEmployee.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_3.add(lblWelcomeEmployee, BorderLayout.CENTER);
@@ -167,38 +170,45 @@ public class EmployeeBossNavigationMenu extends JPanel {
 			}
 		});
 		
-		JButton btnNewButton_1 = new JButton("Statistics");
-		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnNewButton_1.setBounds(10, 297, 316, 80);
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				secondPane = new StatisticsView();
-				
-				panel_2.removeAll();
-				panel_2.add(secondPane);
-				panel_2.revalidate();
-				panel_2.repaint();
-				
-			}
-		});
 		
-		JButton btnNewButton_2 = new JButton("Inventory");
-		btnNewButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-                secondPane = new InventoryView();
-				
-				panel_2.removeAll();
-				panel_2.add(secondPane);
-				panel_2.revalidate();
-				panel_2.repaint();
-			}
-		});
-		btnNewButton_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnNewButton_2.setBounds(10, 203, 316, 80);
+
 		itemsOnDisplayPanel.setLayout(null);
 		itemsOnDisplayPanel.add(btnNewButton);
-		itemsOnDisplayPanel.add(btnNewButton_1);
-		itemsOnDisplayPanel.add(btnNewButton_2);
+		
+		
+		
+		if (typeOfAccount.equalsIgnoreCase("m")) {
+			JButton statisticsButton = new JButton("Statistics");
+			statisticsButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			statisticsButton.setBounds(10, 297, 316, 80);
+			statisticsButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					secondPane = new StatisticsView();
+
+					panel_2.removeAll();
+					panel_2.add(secondPane);
+					panel_2.revalidate();
+					panel_2.repaint();
+
+				}
+			});
+			itemsOnDisplayPanel.add(statisticsButton);
+			JButton inventoryButton = new JButton("Inventory");
+			inventoryButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					secondPane = new InventoryView();
+
+					panel_2.removeAll();
+					panel_2.add(secondPane);
+					panel_2.revalidate();
+					panel_2.repaint();
+				}
+			});
+			inventoryButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			inventoryButton.setBounds(10, 203, 316, 80);
+			itemsOnDisplayPanel.add(inventoryButton);
+		}
+		
 		
 		JButton btnStore = new JButton("Store");
 		btnStore.addActionListener(new ActionListener() {

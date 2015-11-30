@@ -9,6 +9,9 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import model.UserAccount;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
@@ -25,14 +28,16 @@ public class CustomerMenu extends JPanel {
 	
 	JButton myLogOutButton ;
 
+	private UserAccount currentUser;
 	
 	/**
 	 * Create the panel.
 	 */
-	public CustomerMenu( JButton logoutButton   ) {
+	public CustomerMenu( JButton logoutButton , UserAccount currentUser) {
 		
 		myLogOutButton = logoutButton;
 		
+		this.currentUser = currentUser;
 		
 		
 		
@@ -99,6 +104,7 @@ public class CustomerMenu extends JPanel {
 		panel_3.add(myLogOutButton);
 		
 		JLabel lblNewLabel = new JLabel("Welcome Customer");
+		lblNewLabel.setText("Welcome " + currentUser.getName() );
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_1.add(lblNewLabel, BorderLayout.CENTER);
 		button.addActionListener(new ActionListener() {

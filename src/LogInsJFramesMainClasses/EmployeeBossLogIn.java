@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import CustomerViews.CustomerMenu;
+import DBClass.CheapStoreDB;
+import model.UserAccount;
 
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -32,11 +34,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.Box;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 
 public class EmployeeBossLogIn extends JFrame{
 
+
+	private CheapStoreDB db;
+	private List<UserAccount> list;
+	
+	private UserAccount currentUser;
 
 	private JPanel containerPanel;
 	private JLabel labelPicture;
@@ -51,7 +60,7 @@ public class EmployeeBossLogIn extends JFrame{
 	private boolean logoutFlag = false;
 	
 	
-	private JButton btnLogout;
+	private JButton customerMenuLogout;
 
 	private JPanel secondPane;
 	private JButton employeeMenuLogout;	
@@ -81,7 +90,7 @@ public class EmployeeBossLogIn extends JFrame{
 		
 		// Create IMage
 				Image audreyP = new ImageIcon(this.getClass().getResource(
-						"/pictures/Azul.png")).getImage();
+						"/pictures/CheapStoreLogo.png")).getImage();
 				containerPanel.setLayout(new BorderLayout(0, 0));
 				
 				loginPanel = new JPanel();
@@ -111,20 +120,20 @@ public class EmployeeBossLogIn extends JFrame{
 				
 				passwordTextField = new JTextField();
 				passwordTextField.setColumns(10);
-				passwordTextField.setBounds(176, 113, 473, 29);
+				passwordTextField.setBounds(176, 95, 509, 29);
 				panel_2.add(passwordTextField);
 				
 				JLabel lblPassword = new JLabel("Password");
-				lblPassword.setBounds(10, 113, 127, 28);
+				lblPassword.setBounds(39, 95, 127, 28);
 				panel_2.add(lblPassword);
 				
 				emailTextField = new JTextField();
 				emailTextField.setColumns(10);
-				emailTextField.setBounds(176, 35, 473, 29);
+				emailTextField.setBounds(176, 35, 509, 29);
 				panel_2.add(emailTextField);
 				
 				lblEmail = new JLabel("Email");
-				lblEmail.setBounds(10, 35, 127, 28);
+				lblEmail.setBounds(39, 35, 127, 28);
 				panel_2.add(lblEmail);
 				
 				JButton signinButton = new JButton("Sign In");
@@ -134,28 +143,45 @@ public class EmployeeBossLogIn extends JFrame{
 				signinButton.addActionListener(new ActionListener() {
 					
 
+					
+
 					public void actionPerformed(ActionEvent e) {
 						
-						//	Verify that account exists on DB 
-						if(emailTextField.getText().equals("true")){
+						//	Verify that account exists on DB List of Users
+						boolean userInDB = false;
+						
+						for(UserAccount user: list) {
+						    if(user.getUsersEmail().equals(emailTextField.getText()))
+						    	currentUser = user; // Setting the user to be the current user
+						    	userInDB = true; 
+						}						
+						
+						if(userInDB){
 						
 							
 					    // Check if account is customer
-						if(passwordTextField.getText().equals("c")){
+						if(currentUser.getTypeOfAccount().equalsIgnoreCase("c")){
 							
 							
 							
 							
-							secondPane = new CustomerMenu(btnLogout);
+							secondPane = new CustomerMenu(customerMenuLogout, currentUser);
 							containerPanel.removeAll();
 							containerPanel.add(secondPane);
 							containerPanel.revalidate();
 							containerPanel.repaint();
 							
 						// Check if account is Boss or Employee
-						}else{
+						}else if(currentUser.getTypeOfAccount().equalsIgnoreCase("e")){
 							
-							secondPane = new EmployeeBossNavigationMenu(employeeMenuLogout);
+							secondPane = new EmployeeBossNavigationMenu(employeeMenuLogout, currentUser);
+							containerPanel.removeAll();
+							containerPanel.add(secondPane);
+							containerPanel.revalidate();
+							containerPanel.repaint();
+						}else if(currentUser.getTypeOfAccount().equalsIgnoreCase("m")){
+							
+							secondPane = new EmployeeBossNavigationMenu(employeeMenuLogout, currentUser);
 							containerPanel.removeAll();
 							containerPanel.add(secondPane);
 							containerPanel.revalidate();
@@ -167,12 +193,12 @@ public class EmployeeBossLogIn extends JFrame{
 						
 					}
 				});
-				signinButton.setBounds(347, 186, 127, 37);
+				signinButton.setBounds(376, 158, 127, 37);
 				panel_2.add(signinButton);
 				
 
 				
-				Component verticalStrut = Box.createVerticalStrut(49);
+				Component verticalStrut = Box.createVerticalStrut(25);
 				containerPanel.add(verticalStrut, BorderLayout.NORTH);
 		
 		
@@ -184,16 +210,29 @@ public class EmployeeBossLogIn extends JFrame{
 	 * Create the frame.
 	 */
 	public EmployeeBossLogIn() {
+		db = new CheapStoreDB();
+		
+		try {
+			list = db.getUsers();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		
+		
 		setResizable(false);
 		setBackground(new Color(255, 102, 0));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 880, 510);
 		
-		btnLogout = new JButton("Logout");
+		customerMenuLogout = new JButton("Logout");
 		
-		btnLogout.addActionListener(new ActionListener() {
+		customerMenuLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// if Logout button gets clicked, logout and rebuild Login Screen
+				//Clear Users info
+				currentUser = null;
+				
 				containerPanel.removeAll();
 				createLoginPanel();
 				setContentPane(containerPanel);
@@ -210,6 +249,9 @@ public class EmployeeBossLogIn extends JFrame{
 		employeeMenuLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// if Logout button gets clicked, logout and rebuild Login Screen
+				//Clear Users info
+				currentUser = null;
+				
 				containerPanel.removeAll();
 				createLoginPanel();
 				setContentPane(containerPanel);
