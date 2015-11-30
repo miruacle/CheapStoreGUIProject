@@ -65,7 +65,7 @@ public class CheapStoreDB {
 			createConnection();
 		}
 		Statement stmt = null;
-		String query = "select usersEmail, usersImage, typeOfAccount, name, address "
+		String query = "select usersEmail, usersImage, typeOfAccount, name, address, password "
 				+ "from CheapStoreDB.Account ";
 
 		list = new ArrayList<UserAccount>();
@@ -78,8 +78,9 @@ public class CheapStoreDB {
 				String typeOfAccount = rs.getString("typeOfAccount");
 				String name = rs.getString("name");
 				String address = rs.getString("address");
+				String password = rs.getString("password");
 				
-				UserAccount user = new UserAccount(usersEmail, usersImage, typeOfAccount, name, address, null);
+				UserAccount user = new UserAccount(usersEmail, usersImage, typeOfAccount, name, address, password);
 				list.add(user);
 			}
 		} catch (SQLException e) {

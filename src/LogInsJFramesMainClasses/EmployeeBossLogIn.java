@@ -166,6 +166,7 @@ public class EmployeeBossLogIn extends JFrame{
 
 
 				if(userInDB){
+					System.out.println(currentUser.getPassword());
 					if (currentUser.getPassword().equals(passwordTextField.getText())) {
 						// Check if account is customer
 						if (currentUser.getTypeOfAccount().equalsIgnoreCase("c")) {
