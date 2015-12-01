@@ -17,6 +17,8 @@ import model.Item;
 import model.UserAccount;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -26,6 +28,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
+import java.awt.Font;
 
 public class StoreView extends JPanel {
 	
@@ -66,29 +69,67 @@ public class StoreView extends JPanel {
 		panel_2.setBackground(new Color(255, 102, 0));
 		panel.add(panel_2, BorderLayout.CENTER);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(153, 153, 51));
-		panel_1.setBounds(0, 11, 336, 392);
-		panel_2.add(panel_1);
-		panel_1.setLayout(new BorderLayout(0, 0));
-
-		JList itemList = new JList(itemsList.toArray());
-		itemList.setCellRenderer(new ItemCellRenderer());
-		itemList.setVisibleRowCount(4);
-	   		
-		JScrollPane pane = new JScrollPane(itemList);
-		panel_1.add(pane, BorderLayout.CENTER);
-		
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(new Color(255, 153, 51));
 		panel_3.setBounds(346, 11, 442, 247);
 		panel_2.add(panel_3);
+		panel_3.setLayout(null);
+		
+		JLabel imageHolderLabel = new JLabel("Image");
+		imageHolderLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		imageHolderLabel.setBounds(35, 57, 191, 149);
+		panel_3.add(imageHolderLabel);
+		
+		JLabel PriceTagLabel = new JLabel("$4.00");
+		PriceTagLabel.setBounds(259, 84, 173, 85);
+		PriceTagLabel.setFont(new Font("Tahoma", Font.PLAIN, 70));
+		panel_3.add(PriceTagLabel);
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBackground(new Color(255, 153, 51));
 		panel_4.setBounds(346, 269, 442, 134);
 		panel_2.add(panel_4);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(153, 153, 51));
+		panel_1.setBounds(0, 11, 336, 392);
+		panel_2.add(panel_1);
+		panel_1.setLayout(new BorderLayout(0, 0));
+		
+		
+		
+		
+		
+
+		JList itemList = new JList(itemsList.toArray());
+		itemList.setCellRenderer(new ItemCellRenderer());
+		itemList.setVisibleRowCount(4);
+		
+		
+		itemList.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		    	
+		    	imageHolderLabel.setIcon(itemsList.get(itemList.getSelectedIndex()).getImage());
+		    	PriceTagLabel.setText(String.valueOf(itemsList.get(itemList.getSelectedIndex()).getPrice()));
+		    	
+		    	
+		    	
+//		        JList list = (JList)evt.getSource();
+//		        if (evt.getClickCount() == 2) {
+//
+//		            // Double-click detected
+//		            int index = list.locationToIndex(evt.getPoint());
+//		        } else if (evt.getClickCount() == 3) {
+//
+//		            // Triple-click detected
+//		            int index = list.locationToIndex(evt.getPoint());
+//		        }
+		    }
+		});
+	   		
+		JScrollPane pane = new JScrollPane(itemList);
+		panel_1.add(pane, BorderLayout.CENTER);
 
 	}
 }
@@ -96,7 +137,7 @@ public class StoreView extends JPanel {
 
 ////////////////////////////////////////////////////////////////////////////////////
 class ItemCellRenderer extends JLabel implements ListCellRenderer {
-	private static final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
+	private static final Color HIGHLIGHT_COLOR = new Color(100, 0, 128);
 
 	public ItemCellRenderer() {
 		setOpaque(true);
@@ -108,7 +149,10 @@ class ItemCellRenderer extends JLabel implements ListCellRenderer {
 			int index, boolean isSelected, boolean cellHasFocus) {
 		
 		Item entry = (Item) value;
-		setText(entry.getName());
+		
+		setText("$" + String.valueOf(entry.getPrice()));
+		setFont(new Font("Tahoma", Font.PLAIN, 58));
+		
 		setIcon( (Icon) entry.getImage());
 		if (isSelected) {
 			setBackground(HIGHLIGHT_COLOR);
