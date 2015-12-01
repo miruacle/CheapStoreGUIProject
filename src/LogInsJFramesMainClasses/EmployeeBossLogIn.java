@@ -65,7 +65,7 @@ public class EmployeeBossLogIn extends JFrame{
 
 	private JPanel secondPane;
 	private JButton employeeMenuLogout;	
-	
+
 	private static EmployeeBossLogIn frame;
 
 
@@ -147,61 +147,75 @@ public class EmployeeBossLogIn extends JFrame{
 
 
 		signinButton.addActionListener(new ActionListener() {
-
-
-
-
+			
 			public void actionPerformed(ActionEvent e) {
 
 				//	Verify that account exists on DB List of Users
 				boolean userInDB = false;
 
-				for(UserAccount user: list) {
-					if(user.getUsersEmail().equals(emailTextField.getText())){
-						currentUser = user; // Setting the user to be the current user
-						userInDB = true; 
+				if(emailTextField.getText().isEmpty() || passwordTextField.getText().isEmpty()){
+					
+					JOptionPane.showMessageDialog(frame, "Empty the Email and Password cannot be.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					// Print dialog wrong Password or empty Password
+					
+				} else {
+					
+					
+					for(UserAccount user: list) {
+						
+						if(user.getUsersEmail().equals(emailTextField.getText())){
+							currentUser = user; // Setting the user to be the current user
+							userInDB = true; 
+						} else {
+							JOptionPane.showMessageDialog(frame, "Incorrect Email", 
+									"Try Again",
+									JOptionPane.ERROR_MESSAGE);
+						}
+					}
+
+
+
+					if(userInDB){
+						
+						System.out.println(currentUser.getPassword());
+						if (currentUser.getPassword().equals(passwordTextField.getText())) {
+							// Check if account is customer
+							if (currentUser.getTypeOfAccount().equalsIgnoreCase("c")) {
+
+								secondPane = new CustomerMenu(customerMenuLogout, currentUser);
+								containerPanel.removeAll();
+								containerPanel.add(secondPane);
+								containerPanel.revalidate();
+								containerPanel.repaint();
+
+								// Check if account is Boss or Employee
+							} else if (currentUser.getTypeOfAccount().equalsIgnoreCase("e")) {
+
+								secondPane = new EmployeeBossNavigationMenu(employeeMenuLogout, currentUser);
+								containerPanel.removeAll();
+								containerPanel.add(secondPane);
+								containerPanel.revalidate();
+								containerPanel.repaint();
+							} else if (currentUser.getTypeOfAccount().equalsIgnoreCase("m")) {
+
+								secondPane = new EmployeeBossNavigationMenu(employeeMenuLogout, currentUser);
+								containerPanel.removeAll();
+								containerPanel.add(secondPane);
+								containerPanel.revalidate();
+								containerPanel.repaint();
+							} 
+						}else {
+							JOptionPane.showMessageDialog(frame, "Wrong Password or empty Password");
+							// Print dialog wrong Password or empty Password
+						}
+
+					} else{
+						JOptionPane.showMessageDialog(frame, "Wrong email or empty email");
+						// Print dialog wrong email or empty email
 					}
 				}
 
-
-
-				if(userInDB){
-					System.out.println(currentUser.getPassword());
-					if (currentUser.getPassword().equals(passwordTextField.getText())) {
-						// Check if account is customer
-						if (currentUser.getTypeOfAccount().equalsIgnoreCase("c")) {
-
-							secondPane = new CustomerMenu(customerMenuLogout, currentUser);
-							containerPanel.removeAll();
-							containerPanel.add(secondPane);
-							containerPanel.revalidate();
-							containerPanel.repaint();
-
-							// Check if account is Boss or Employee
-						} else if (currentUser.getTypeOfAccount().equalsIgnoreCase("e")) {
-
-							secondPane = new EmployeeBossNavigationMenu(employeeMenuLogout, currentUser);
-							containerPanel.removeAll();
-							containerPanel.add(secondPane);
-							containerPanel.revalidate();
-							containerPanel.repaint();
-						} else if (currentUser.getTypeOfAccount().equalsIgnoreCase("m")) {
-
-							secondPane = new EmployeeBossNavigationMenu(employeeMenuLogout, currentUser);
-							containerPanel.removeAll();
-							containerPanel.add(secondPane);
-							containerPanel.revalidate();
-							containerPanel.repaint();
-						} 
-					}else {
-						JOptionPane.showMessageDialog(frame, "Wrong Password or empty Password");
-						// Print dialog wrong Password or empty Password
-					}
-
-				} else{
-					JOptionPane.showMessageDialog(frame, "Wrong email or empty email");
-					// Print dialog wrong email or empty email
-				}
 
 
 
