@@ -31,9 +31,9 @@ import model.UserAccount;
  */
 
 public class CheapStoreDB {
-	private static String userName = "root"; //Change to yours
-	private static String password = "";
-	private static String serverName = "localhost"; //IF using CSSGATE SERVER ->  "cssgate.insttech.washington.edu";
+	private static String userName = "_445team9"; //Change to yours
+	private static String password = "yicKamna";
+	private static String serverName = "cssgate.insttech.washington.edu";//"localhost"; //IF using CSSGATE SERVER ->  "cssgate.insttech.washington.edu";
 	private static Connection conn;
 	private List<UserAccount> list;
 	private List<Item> itemsList;
@@ -66,7 +66,7 @@ public class CheapStoreDB {
 		}
 		Statement stmt = null;
 		String query = "select usersEmail, usersImage, typeOfAccount, name, address, password "
-				+ "from CheapStoreDB.Account ";
+				+ "from _445team9.Account ";
 
 		list = new ArrayList<UserAccount>();
 		try {
