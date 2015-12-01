@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
@@ -32,6 +33,8 @@ import javax.swing.JTextArea;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JTextField;
 
 public class StoreView extends JPanel {
@@ -116,7 +119,19 @@ public class StoreView extends JPanel {
 		panel_2.add(panel_4);
 		panel_4.setLayout(new BorderLayout(0, 0));
 		
-		JButton btnNewButton = new JButton("New button");
+		
+
+		// Create IMage
+		Image addToCartImage = new ImageIcon(this.getClass().getResource(
+				"/pictures/addToCart.png")).getImage();
+		
+		
+		JButton btnNewButton = new JButton("");
+		btnNewButton.setIcon(new ImageIcon(addToCartImage));
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		btnNewButton.setForeground(new Color(0, 0, 0));
 		btnNewButton.setBackground(new Color(255, 153, 51));
 		panel_4.add(btnNewButton, BorderLayout.EAST);
