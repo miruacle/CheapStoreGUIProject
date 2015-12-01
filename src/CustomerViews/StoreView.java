@@ -11,6 +11,8 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import DBClass.CheapStoreDB;
 import model.Item;
@@ -76,12 +78,12 @@ public class StoreView extends JPanel {
 		panel_2.add(panel_3);
 		panel_3.setLayout(null);
 		
-		JLabel imageHolderLabel = new JLabel("Image");
+		JLabel imageHolderLabel = new JLabel("Please select an Item");
 		imageHolderLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		imageHolderLabel.setBounds(35, 57, 191, 149);
 		panel_3.add(imageHolderLabel);
 		
-		JLabel PriceTagLabel = new JLabel("$4.00");
+		JLabel PriceTagLabel = new JLabel("");
 		PriceTagLabel.setBounds(259, 84, 173, 85);
 		PriceTagLabel.setFont(new Font("Tahoma", Font.PLAIN, 70));
 		panel_3.add(PriceTagLabel);
@@ -107,26 +109,17 @@ public class StoreView extends JPanel {
 		itemList.setVisibleRowCount(4);
 		
 		
-		itemList.addMouseListener(new MouseAdapter() {
-		    public void mouseClicked(MouseEvent evt) {
-		    	
-		    	imageHolderLabel.setIcon(itemsList.get(itemList.getSelectedIndex()).getImage());
-		    	PriceTagLabel.setText(String.valueOf(itemsList.get(itemList.getSelectedIndex()).getPrice()));
-		    	
-		    	
-		    	
-//		        JList list = (JList)evt.getSource();
-//		        if (evt.getClickCount() == 2) {
-//
-//		            // Double-click detected
-//		            int index = list.locationToIndex(evt.getPoint());
-//		        } else if (evt.getClickCount() == 3) {
-//
-//		            // Triple-click detected
-//		            int index = list.locationToIndex(evt.getPoint());
-//		        }
-		    }
-		});
+		itemList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent evt) {
+            	Item i = (Item) itemList.getSelectedValue();
+            	imageHolderLabel.setText("");
+            	imageHolderLabel.setIcon(i.getImage());
+//            	System.out.println(String.format("%.2f", i.getPrice())  );
+            	PriceTagLabel.setText("$" + String.format("%.2f", i.getPrice()));
+            }
+        });
+		
 	   		
 		JScrollPane pane = new JScrollPane(itemList);
 		panel_1.add(pane, BorderLayout.CENTER);
@@ -150,7 +143,7 @@ class ItemCellRenderer extends JLabel implements ListCellRenderer {
 		
 		Item entry = (Item) value;
 		
-		setText("$" + String.valueOf(entry.getPrice()));
+		setText("$" + String.format("%.2f", entry.getPrice()));
 		setFont(new Font("Tahoma", Font.PLAIN, 58));
 		
 		setIcon( (Icon) entry.getImage());
