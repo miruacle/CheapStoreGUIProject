@@ -167,10 +167,6 @@ public class EmployeeBossLogIn extends JFrame{
 						if(user.getUsersEmail().equals(emailTextField.getText())){
 							currentUser = user; // Setting the user to be the current user
 							userInDB = true; 
-						} else {
-							JOptionPane.showMessageDialog(frame, "Incorrect Email", 
-									"Try Again",
-									JOptionPane.ERROR_MESSAGE);
 						}
 					}
 
@@ -206,12 +202,16 @@ public class EmployeeBossLogIn extends JFrame{
 								containerPanel.repaint();
 							} 
 						}else {
-							JOptionPane.showMessageDialog(frame, "Wrong Password or empty Password");
+							JOptionPane.showMessageDialog(frame, "Incorrect Password", 
+									"Try Again",
+									JOptionPane.ERROR_MESSAGE);
 							// Print dialog wrong Password or empty Password
 						}
 
 					} else{
-						JOptionPane.showMessageDialog(frame, "Wrong email or empty email");
+						JOptionPane.showMessageDialog(frame, "Incorrect Email", 
+								"Try Again",
+								JOptionPane.ERROR_MESSAGE);
 						// Print dialog wrong email or empty email
 					}
 				}
