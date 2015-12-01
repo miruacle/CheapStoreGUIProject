@@ -107,7 +107,7 @@ public class CheapStoreDB {
 		}
 		Statement stmt = null;
 		String query = "select date, description, image, inStock, itemId, name, price "
-				+ "from CheapStoreDB.Item ";
+				+ "from _445team9.Item ";
 
 		itemsList = new ArrayList<Item>();
 		try {
