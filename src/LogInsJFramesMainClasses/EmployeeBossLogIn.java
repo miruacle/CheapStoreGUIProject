@@ -157,7 +157,7 @@ public class EmployeeBossLogIn extends JFrame{
 					
 					JOptionPane.showMessageDialog(frame, "Empty the Email and Password cannot be.", "Error",
 							JOptionPane.ERROR_MESSAGE);
-					/// Print dialog wrong Password or empty Password
+					// Print dialog wrong Password or empty Password
 					
 				} else {
 					
@@ -202,12 +202,16 @@ public class EmployeeBossLogIn extends JFrame{
 								containerPanel.repaint();
 							} 
 						}else {
-							JOptionPane.showMessageDialog(frame, "Wrong Password or empty Password");
+							JOptionPane.showMessageDialog(frame, "Incorrect Password", 
+									"Try Again",
+									JOptionPane.ERROR_MESSAGE);
 							// Print dialog wrong Password or empty Password
 						}
 
 					} else{
-						JOptionPane.showMessageDialog(frame, "Wrong email or empty email");
+						JOptionPane.showMessageDialog(frame, "Incorrect Email", 
+								"Try Again",
+								JOptionPane.ERROR_MESSAGE);
 						// Print dialog wrong email or empty email
 					}
 				}
