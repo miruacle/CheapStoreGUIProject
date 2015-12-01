@@ -10,7 +10,7 @@ public class Item {
 	private String name;
 	private String description;
 	private ImageIcon image;
-	private String date;
+	private String date;// format from mysql is in Yyyy-mm-dd
 	private double price;
 	private int inStock;
 	

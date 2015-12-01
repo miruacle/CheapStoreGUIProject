@@ -28,15 +28,18 @@ import java.awt.Dimension;
 import java.awt.Color;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import java.awt.Font;
+import javax.swing.JTextField;
 
 public class StoreView extends JPanel {
 	
 
 	private CheapStoreDB db;
 	private List<Item> itemsList;
+	private final JTextArea productDescriptionLabel = new JTextArea();
 	
 	
 
@@ -76,22 +79,75 @@ public class StoreView extends JPanel {
 		panel_3.setBackground(new Color(255, 153, 51));
 		panel_3.setBounds(346, 11, 442, 247);
 		panel_2.add(panel_3);
-		panel_3.setLayout(null);
+		panel_3.setLayout(new BorderLayout(0, 0));
 		
 		JLabel imageHolderLabel = new JLabel("Please select an Item");
 		imageHolderLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		imageHolderLabel.setBounds(35, 57, 191, 149);
-		panel_3.add(imageHolderLabel);
+		panel_3.add(imageHolderLabel, BorderLayout.CENTER);
+		
+		JPanel panel_6 = new JPanel();
+		panel_6.setBackground(new Color(255, 153, 51));
+		panel_3.add(panel_6, BorderLayout.EAST);
+		panel_6.setLayout(new BorderLayout(0, 0));
 		
 		JLabel PriceTagLabel = new JLabel("");
-		PriceTagLabel.setBounds(259, 84, 173, 85);
+		panel_6.add(PriceTagLabel);
+		PriceTagLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		PriceTagLabel.setFont(new Font("Tahoma", Font.PLAIN, 70));
-		panel_3.add(PriceTagLabel);
+		
+		Component horizontalStrut = Box.createHorizontalStrut(45);
+		panel_6.add(horizontalStrut, BorderLayout.EAST);
+		
+		JPanel panel_7 = new JPanel();
+		panel_7.setBackground(new Color(255, 153, 51));
+		panel_3.add(panel_7, BorderLayout.NORTH);
+		panel_7.setLayout(new BorderLayout(0, 0));
+		
+		JLabel nameOfProduct = new JLabel("");
+		panel_7.add(nameOfProduct);
+		nameOfProduct.setFont(new Font("Tahoma", Font.PLAIN, 40));
+		
+		Component horizontalStrut_1 = Box.createHorizontalStrut(17);
+		panel_7.add(horizontalStrut_1, BorderLayout.WEST);
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBackground(new Color(255, 153, 51));
 		panel_4.setBounds(346, 269, 442, 134);
 		panel_2.add(panel_4);
+		panel_4.setLayout(new BorderLayout(0, 0));
+		
+		JButton btnNewButton = new JButton("New button");
+		btnNewButton.setForeground(new Color(0, 0, 0));
+		btnNewButton.setBackground(new Color(255, 153, 51));
+		panel_4.add(btnNewButton, BorderLayout.EAST);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setBackground(new Color(255, 153, 51));
+		panel_4.add(panel_5, BorderLayout.CENTER);
+		panel_5.setLayout(new BorderLayout(0, 0));
+		
+		Component horizontalStrut_2 = Box.createHorizontalStrut(19);
+		panel_5.add(horizontalStrut_2, BorderLayout.WEST);
+		
+		
+		
+		productDescriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		productDescriptionLabel.setWrapStyleWord(true);
+		productDescriptionLabel.setLineWrap(true);
+		productDescriptionLabel.setEditable(false);
+		productDescriptionLabel.setBackground(new Color(255, 153, 51));
+//		panel_5.add(productDescriptionLabel, BorderLayout.CENTER);
+		
+
+		JScrollPane scrollPane = new JScrollPane(productDescriptionLabel);
+		scrollPane.setBorder(null);
+		scrollPane.setBackground(new Color(255, 153, 51));
+		panel_5.add(scrollPane, BorderLayout.CENTER);
+		
+		
+		Component horizontalStrut_3 = Box.createHorizontalStrut(19);
+		panel_5.add(horizontalStrut_3, BorderLayout.EAST);
+//		productDescriptionLabel.setColumns(10);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(153, 153, 51));
@@ -114,6 +170,9 @@ public class StoreView extends JPanel {
             public void valueChanged(ListSelectionEvent evt) {
             	Item i = (Item) itemList.getSelectedValue();
             	imageHolderLabel.setText("");
+            	nameOfProduct.setText(i.getName());
+            	productDescriptionLabel.setText(i.getDescription());
+        		
             	imageHolderLabel.setIcon(i.getImage());
 //            	System.out.println(String.format("%.2f", i.getPrice())  );
             	PriceTagLabel.setText("$" + String.format("%.2f", i.getPrice()));
