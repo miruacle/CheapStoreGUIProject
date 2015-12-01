@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -17,6 +18,7 @@ import java.awt.FlowLayout;
 import java.awt.Image;
 
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
 import java.awt.Dimension;
@@ -33,8 +35,12 @@ import javax.swing.GroupLayout.Alignment;
 import java.awt.ComponentOrientation;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.Box;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -144,83 +150,26 @@ public class EmployeeBossLogIn extends JFrame{
 
 		JButton signinButton = new JButton("Sign In");
 
-
-
+		//allows you to press enter on sign in button
+		Action signIn = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				signInHelper();
+			}
+		};
+		signinButton.getInputMap().put(KeyStroke.getKeyStroke("ENTER"),
+				"signIn");
+		signinButton.getActionMap().put("signIn",
+				signIn);
+		
+		//listens for the click on the sign in button
 		signinButton.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 
-				//	Verify that account exists on DB List of Users
-				boolean userInDB = false;
-
-				if(emailTextField.getText().isEmpty() || passwordTextField.getText().isEmpty()){
-					
-					JOptionPane.showMessageDialog(frame, "Empty the Email and Password cannot be.", "Error",
-							JOptionPane.ERROR_MESSAGE);
-					// Print dialog wrong Password or empty Password
-					
-				} else {
-					
-					
-					for(UserAccount user: list) {
-						
-						if(user.getUsersEmail().equals(emailTextField.getText())){
-							currentUser = user; // Setting the user to be the current user
-							userInDB = true; 
-						}
-					}
-
-
-
-					if(userInDB){
-						
-						System.out.println(currentUser.getPassword());
-						if (currentUser.getPassword().equals(passwordTextField.getText())) {
-							// Check if account is customer
-							if (currentUser.getTypeOfAccount().equalsIgnoreCase("c")) {
-
-								secondPane = new CustomerMenu(customerMenuLogout, currentUser);
-								containerPanel.removeAll();
-								containerPanel.add(secondPane);
-								containerPanel.revalidate();
-								containerPanel.repaint();
-
-								// Check if account is Boss or Employee
-							} else if (currentUser.getTypeOfAccount().equalsIgnoreCase("e")) {
-
-								secondPane = new EmployeeBossNavigationMenu(employeeMenuLogout, currentUser);
-								containerPanel.removeAll();
-								containerPanel.add(secondPane);
-								containerPanel.revalidate();
-								containerPanel.repaint();
-							} else if (currentUser.getTypeOfAccount().equalsIgnoreCase("m")) {
-
-								secondPane = new EmployeeBossNavigationMenu(employeeMenuLogout, currentUser);
-								containerPanel.removeAll();
-								containerPanel.add(secondPane);
-								containerPanel.revalidate();
-								containerPanel.repaint();
-							} 
-						}else {
-							JOptionPane.showMessageDialog(frame, "Incorrect Password", 
-									"Try Again",
-									JOptionPane.ERROR_MESSAGE);
-							// Print dialog wrong Password or empty Password
-						}
-
-					} else{
-						JOptionPane.showMessageDialog(frame, "Incorrect Email", 
-								"Try Again",
-								JOptionPane.ERROR_MESSAGE);
-						// Print dialog wrong email or empty email
-					}
-				}
-
-
-
-
+				signInHelper();
 			}
 		});
+		
 		signinButton.setBounds(376, 158, 127, 37);
 		panel_2.add(signinButton);
 
@@ -232,7 +181,82 @@ public class EmployeeBossLogIn extends JFrame{
 
 	}
 
+	public void signInHelper(){
+		//	Verify that account exists on DB List of Users
+		boolean userInDB = false;
 
+		if(emailTextField.getText().isEmpty() || passwordTextField.getText().isEmpty()){
+
+			JOptionPane.showMessageDialog(frame, "Empty the Email and Password cannot be.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			// Print dialog wrong Password or empty Password
+
+		} else {
+
+
+			for(UserAccount user: list) {
+
+				if(user.getUsersEmail().equals(emailTextField.getText())){
+					currentUser = user; // Setting the user to be the current user
+					userInDB = true; 
+				}
+			}
+
+
+
+			if(userInDB){
+
+				System.out.println(currentUser.getPassword());
+				if (currentUser.getPassword().equals(passwordTextField.getText())) {
+					// Check if account is customer
+					if (currentUser.getTypeOfAccount().equalsIgnoreCase("c")) {
+
+						secondPane = new CustomerMenu(customerMenuLogout, currentUser);
+						containerPanel.removeAll();
+						containerPanel.add(secondPane);
+						containerPanel.revalidate();
+						containerPanel.repaint();
+
+						// Check if account is Boss or Employee
+					} else if (currentUser.getTypeOfAccount().equalsIgnoreCase("e")) {
+
+						secondPane = new EmployeeBossNavigationMenu(employeeMenuLogout, currentUser);
+						containerPanel.removeAll();
+						containerPanel.add(secondPane);
+						containerPanel.revalidate();
+						containerPanel.repaint();
+					} else if (currentUser.getTypeOfAccount().equalsIgnoreCase("m")) {
+
+						secondPane = new EmployeeBossNavigationMenu(employeeMenuLogout, currentUser);
+						containerPanel.removeAll();
+						containerPanel.add(secondPane);
+						containerPanel.revalidate();
+						containerPanel.repaint();
+					} 
+				}else {
+					JOptionPane.showMessageDialog(frame, "Incorrect Password", 
+							"Try Again",
+							JOptionPane.ERROR_MESSAGE);
+					// Print dialog wrong Password or empty Password
+				}
+
+			} else{
+				JOptionPane.showMessageDialog(frame, "Incorrect Email", 
+						"Try Again",
+						JOptionPane.ERROR_MESSAGE);
+				// Print dialog wrong email or empty email
+			}
+		}
+	}
+
+	//	public void keyPressed(KeyEvent e) {
+	//        if (e.getKeyCode()==KeyEvent.VK_ENTER){
+	//            System.out.println("Hello");
+	//        }
+	//        Component frame = new JFrame();
+	//        JOptionPane.showMessageDialog(frame , "You've Submitted the name " + nameInput.getText());
+	//
+	//    }
 
 	/**
 	 * Create the frame.
