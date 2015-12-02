@@ -79,12 +79,14 @@ public class StoreView extends JPanel {
 		
 		
 		JPanel panel_3 = new JPanel();
+		panel_3.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		panel_3.setBackground(new Color(255, 153, 51));
 		panel_3.setBounds(346, 11, 442, 247);
 		panel_2.add(panel_3);
 		panel_3.setLayout(new BorderLayout(0, 0));
 		
 		JLabel imageHolderLabel = new JLabel("Please select an Item");
+		imageHolderLabel.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		imageHolderLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_3.add(imageHolderLabel, BorderLayout.CENTER);
 		

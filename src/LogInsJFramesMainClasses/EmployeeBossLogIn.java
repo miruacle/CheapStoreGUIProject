@@ -73,6 +73,7 @@ public class EmployeeBossLogIn extends JFrame{
 	private JButton employeeMenuLogout;	
 
 	private static EmployeeBossLogIn frame;
+	private JButton signinButton;
 
 
 	/**
@@ -94,6 +95,9 @@ public class EmployeeBossLogIn extends JFrame{
 
 
 	public void createLoginPanel(){
+		
+		
+		
 		containerPanel = new JPanel();
 		containerPanel.setBackground(new Color(255, 102, 0));
 		containerPanel.setBounds(100, 100, 848, 510);
@@ -148,8 +152,12 @@ public class EmployeeBossLogIn extends JFrame{
 		lblEmail.setBounds(39, 35, 127, 28);
 		panel_2.add(lblEmail);
 
-		JButton signinButton = new JButton("Sign In");
+		signinButton = new JButton("Sign In");
 
+		
+		
+		
+		
 		//allows you to press enter on sign in button
 		Action signIn = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
