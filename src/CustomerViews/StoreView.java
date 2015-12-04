@@ -1,16 +1,27 @@
 package CustomerViews;
 
-import javax.swing.JPanel;
-import javax.swing.JButton;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-
-import java.awt.FlowLayout;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -19,41 +30,28 @@ import DBClass.CheapStoreDB;
 import model.Item;
 import model.UserAccount;
 
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.SQLException;
-import java.util.List;
-import java.awt.event.ActionEvent;
-import java.awt.Dimension;
-import java.awt.Color;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListModel;
-import java.awt.Font;
-import java.awt.Image;
-
-import javax.swing.JTextField;
-
 public class StoreView extends JPanel {
 	
 
 	private CheapStoreDB db;
 	private List<Item> itemsList;
 	private final JTextArea productDescriptionLabel = new JTextArea();
-	
+	private JList currentSelectedItemList;
+	private UserAccount currentUser;
+	private int numberOfNoShowUps = 5;
 	
 
 	/**
 	 * Create the panel.
+	 * @param currentUser TODO
 	 */
-	public StoreView() {
+	public StoreView(UserAccount currentUser) {
 		
 		
-		
+		this.currentUser = currentUser;
 		db = new CheapStoreDB();
+		
+		System.out.println(currentUser.getUsersEmail());
 		
 		try {
 			itemsList = db.getItems();
@@ -128,15 +126,64 @@ public class StoreView extends JPanel {
 				"/pictures/addToCart.png")).getImage();
 		
 		
-		JButton btnNewButton = new JButton("");
-		btnNewButton.setIcon(new ImageIcon(addToCartImage));
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton cartButton = new JButton("");
+		cartButton.setIcon(new ImageIcon(addToCartImage));
+		cartButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// if item is selected check if user is not in rejection list then take them to the cart view 
+				
+
+            	Item itemSelected = (Item) currentSelectedItemList.getSelectedValue();
+				if (itemSelected !=null) {
+					
+					
+					Boolean usersInRejectionList = false;// Boolean to determine wether user is in rejection list
+					
+						try {
+							usersInRejectionList = db.getUserInRejectionList(currentUser.getUsersEmail(), numberOfNoShowUps);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						
+						
+					if(!usersInRejectionList){
+						JOptionPane.showMessageDialog(null, "You are not in the rejection List :)", "Information",
+								JOptionPane.INFORMATION_MESSAGE);
+						
+						int currentOrderNumber = 0;
+						try {
+							currentOrderNumber = db.getLatestOrderNumber(currentUser.getUsersEmail());
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						
+						// Insert into db with most current Order number Insert Query
+						// So far You can only add one Item to your order, not change the quanity
+						try {
+							db.InsertIntoOrder(currentUser.getUsersEmail(), currentOrderNumber, itemSelected.getItemId(), 1, null);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						
+					}else{// user is in rejection list
+						JOptionPane.showMessageDialog(null, "You are in the rejection List, and will not be able to purchase items until... :(", "Warning",
+								JOptionPane.WARNING_MESSAGE);
+					}
+				} else{
+					JOptionPane.showMessageDialog(null, "Please, first select an Item to add to the cart.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+
 			}
 		});
-		btnNewButton.setForeground(new Color(0, 0, 0));
-		btnNewButton.setBackground(new Color(255, 153, 51));
-		panel_4.add(btnNewButton, BorderLayout.EAST);
+		cartButton.setForeground(new Color(0, 0, 0));
+		cartButton.setBackground(new Color(255, 153, 51));
+		panel_4.add(cartButton, BorderLayout.EAST);
 		
 		JPanel panel_5 = new JPanel();
 		panel_5.setBackground(new Color(255, 153, 51));
@@ -177,15 +224,15 @@ public class StoreView extends JPanel {
 		
 		
 
-		JList itemList = new JList(itemsList.toArray());
-		itemList.setCellRenderer(new ItemCellRenderer());
-		itemList.setVisibleRowCount(4);
+		currentSelectedItemList = new JList(itemsList.toArray());
+		currentSelectedItemList.setCellRenderer(new ItemCellRenderer());
+		currentSelectedItemList.setVisibleRowCount(4);
 		
 		
-		itemList.addListSelectionListener(new ListSelectionListener() {
+		currentSelectedItemList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent evt) {
-            	Item i = (Item) itemList.getSelectedValue();
+            	Item i = (Item) currentSelectedItemList.getSelectedValue();
             	imageHolderLabel.setText("");
             	nameOfProduct.setText(i.getName());
             	productDescriptionLabel.setText(i.getDescription());
@@ -197,7 +244,7 @@ public class StoreView extends JPanel {
         });
 		
 	   		
-		JScrollPane pane = new JScrollPane(itemList);
+		JScrollPane pane = new JScrollPane(currentSelectedItemList);
 		panel_1.add(pane, BorderLayout.CENTER);
 
 	}

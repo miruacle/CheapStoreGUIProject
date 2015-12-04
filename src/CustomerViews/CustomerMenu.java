@@ -74,7 +74,7 @@ public class CustomerMenu extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				
-				secondPane = new StoreView();
+				secondPane = new StoreView(currentUser);
 				
 				panel_2.removeAll();
 				panel_2.add(secondPane);
@@ -110,7 +110,7 @@ public class CustomerMenu extends JPanel {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				secondPane = new CartView();
+				secondPane = new CartView(currentUser);
 				
 				panel_2.removeAll();
 				panel_2.add(secondPane);
@@ -131,7 +131,7 @@ public class CustomerMenu extends JPanel {
 
 	private void createStoreView() {
 	    
-	    panel_2 = new StoreView();
+	    panel_2 = new StoreView(currentUser);
 	    panel.add(panel_2, BorderLayout.CENTER);
 	    
 	}

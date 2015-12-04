@@ -16,6 +16,7 @@ import model.UserAccount;
 
 import java.awt.FlowLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -96,6 +97,8 @@ public class EmployeeBossLogIn extends JFrame{
 
 	public void createLoginPanel(){
 		
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		
 		
 		containerPanel = new JPanel();

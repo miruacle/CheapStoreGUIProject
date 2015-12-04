@@ -30,6 +30,7 @@ public class EmployeeBossNavigationMenu extends JPanel {
 	
 	private JPanel panel_2;
 	private String typeOfAccount;
+	private UserAccount currentUser;
 
 	
 	/**
@@ -38,6 +39,7 @@ public class EmployeeBossNavigationMenu extends JPanel {
 	public EmployeeBossNavigationMenu( JButton logoutButton, UserAccount currentUser) {
 		
 		this.typeOfAccount = currentUser.getTypeOfAccount();
+		this.currentUser = currentUser;
 		
 		
 		
@@ -97,25 +99,11 @@ public class EmployeeBossNavigationMenu extends JPanel {
 		panel_3.add(panel_4, BorderLayout.EAST);
 		panel_4.setLayout(new BoxLayout(panel_4, BoxLayout.X_AXIS));
 		
-		JButton btnNewButton_3 = new JButton("Cart");
-		btnNewButton_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				secondPane = new CartView();
-				
-				panel_2.removeAll();
-				panel_2.add(secondPane);
-				panel_2.revalidate();
-				panel_2.repaint();
-			}
-		});
-		panel_4.add(btnNewButton_3);
-		
 		JButton btnNewButton_4 = new JButton("Store");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				secondPane = new StoreView();
+				secondPane = new StoreView(currentUser);
 				
 				panel_2.removeAll();
 				panel_2.add(secondPane);
@@ -125,6 +113,20 @@ public class EmployeeBossNavigationMenu extends JPanel {
 			}
 		});
 		panel_4.add(btnNewButton_4);
+		
+		JButton btnNewButton_3 = new JButton("Cart");
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				secondPane = new CartView(currentUser);
+				
+				panel_2.removeAll();
+				panel_2.add(secondPane);
+				panel_2.revalidate();
+				panel_2.repaint();
+			}
+		});
+		panel_4.add(btnNewButton_3);
 		
 		JLabel lblWelcomeEmployee = new JLabel("Welcome Employee");
 		lblWelcomeEmployee.setText("Welcome " + currentUser.getName() );
@@ -214,7 +216,7 @@ public class EmployeeBossNavigationMenu extends JPanel {
 		btnStore.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				secondPane = new StoreView();
+				secondPane = new StoreView(currentUser);
 				
 				panel_2.removeAll();
 				panel_2.add(secondPane);

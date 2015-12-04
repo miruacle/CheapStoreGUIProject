@@ -2,8 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="C:/Users/Ariel/Documents/School/Fall 2015/Database System/mysql-connector-java-5.1.27-bin.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ariel/Documents/School/Fall 2015/Database System/jgoodies-forms-1.8.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Audrey/Documents/0.AudreyMade_AUDREYS_STUFF/2 == UW TACOMA/Winter 2015 - Fall 2015/4 Fall 2015/TCSS 445 A - DataBases/Phase 3/JAVA Sample files/mysql-connector-java-5.1.27-bin (1).jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
