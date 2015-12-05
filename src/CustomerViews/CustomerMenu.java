@@ -74,9 +74,9 @@ public class CustomerMenu extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				
+				panel_2.removeAll();
 				secondPane = new StoreView(currentUser);
 				
-				panel_2.removeAll();
 				panel_2.add(secondPane);
 				panel_2.revalidate();
 				panel_2.repaint();

@@ -43,6 +43,7 @@ public class EmployeeBossNavigationMenu extends JPanel {
 		
 		
 		
+		
 		setBounds(100, 100, 848, 471);
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
@@ -102,10 +103,10 @@ public class EmployeeBossNavigationMenu extends JPanel {
 		JButton btnNewButton_4 = new JButton("Store");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				secondPane = new StoreView(currentUser);
 				
 				panel_2.removeAll();
+				secondPane = new StoreView(currentUser);
+								
 				panel_2.add(secondPane);
 				panel_2.revalidate();
 				panel_2.repaint();
@@ -216,9 +217,11 @@ public class EmployeeBossNavigationMenu extends JPanel {
 		btnStore.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
+
+				panel_2.removeAll();
+				
 				secondPane = new StoreView(currentUser);
 				
-				panel_2.removeAll();
 				panel_2.add(secondPane);
 				panel_2.revalidate();
 				panel_2.repaint();

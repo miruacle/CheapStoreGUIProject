@@ -39,17 +39,19 @@ public class StoreView extends JPanel {
 	private JList currentSelectedItemList;
 	private UserAccount currentUser;
 	private int numberOfNoShowUps = 5;
+	private JPanel HolderPanel; 
 	
 
 	/**
 	 * Create the panel.
 	 * @param currentUser TODO
 	 */
-	public StoreView(UserAccount currentUser) {
+	public StoreView(UserAccount currentUser ) {
 		
 		
 		this.currentUser = currentUser;
 		db = new CheapStoreDB();
+		this.HolderPanel = this;
 		
 		System.out.println(currentUser.getUsersEmail());
 		
@@ -67,7 +69,7 @@ public class StoreView extends JPanel {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 102, 0));
-		add(panel);
+		HolderPanel.add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_2 = new JPanel();
@@ -163,7 +165,15 @@ public class StoreView extends JPanel {
 						// Insert into db with most current Order number Insert Query
 						// So far You can only add one Item to your order, not change the quanity
 						try {
+							
 							db.InsertIntoOrder(currentUser.getUsersEmail(), currentOrderNumber, itemSelected.getItemId(), 1, null);
+							HolderPanel.removeAll();
+							JPanel secondPane = new CartView(currentUser);
+							
+							HolderPanel.add(secondPane);
+							HolderPanel.revalidate();
+							HolderPanel.repaint();
+							
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

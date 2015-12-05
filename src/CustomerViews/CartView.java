@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
@@ -31,6 +32,8 @@ import javax.swing.JTextArea;
 import javax.swing.ListCellRenderer;
 
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JList;
 
 public class CartView extends JPanel {
@@ -94,11 +97,28 @@ public class CartView extends JPanel {
 
 		JScrollPane scrollPane_1 = new JScrollPane(itemsInCartList);
 		itemsOnCartPanel.add(scrollPane_1);
+		
+		// Create IMage
+				Image cartImage = new ImageIcon(this.getClass().getResource(
+						"/pictures/cart.png")).getImage();
+				
 
 		JPanel shoppingCartPanel = new JPanel();
 		shoppingCartPanel.setBackground(new Color(255, 153, 51));
 		shoppingCartPanel.setBounds(590, 11, 198, 172);
 		panel_2.add(shoppingCartPanel);
+		shoppingCartPanel.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblNewLabel_1 = new JLabel("Your Cart");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		shoppingCartPanel.add(lblNewLabel_1, BorderLayout.NORTH);
+		
+		JLabel ImageLabel = new JLabel("");
+		ImageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		ImageLabel.setIcon(new ImageIcon(cartImage) );
+		shoppingCartPanel.add(ImageLabel, BorderLayout.CENTER);
+		
 
 		JPanel purchaseSummaryPanel = new JPanel();
 		purchaseSummaryPanel.setBackground(new Color(255, 153, 51));
@@ -114,7 +134,8 @@ public class CartView extends JPanel {
 		scrollPane.setViewportView(txtrFdfddfvvdfvdfv);
 
 		JLabel lblNewLabel = new JLabel("Your Estimated Total:");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel.setForeground(Color.BLACK);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
 		purchaseSummaryPanel.add(lblNewLabel, BorderLayout.NORTH);
 
 	}
