@@ -150,8 +150,8 @@ public class StoreView extends JPanel {
 						
 						
 					if(!usersInRejectionList){
-						JOptionPane.showMessageDialog(null, "You are not in the rejection List :)", "Information",
-								JOptionPane.INFORMATION_MESSAGE);
+//						JOptionPane.showMessageDialog(null, "You are able to order. :)", "Information",
+//								JOptionPane.INFORMATION_MESSAGE);
 						
 						int currentOrderNumber = 0;
 						try {

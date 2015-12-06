@@ -176,8 +176,7 @@ public class OrdersView extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				
-				
+				//if the Orders in Progress panel is not blank
 				if(usersInOrderList.size() != 0){
 					Date date = new Date(); // your date
 				    Calendar cal = Calendar.getInstance();

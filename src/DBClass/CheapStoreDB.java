@@ -342,12 +342,11 @@ public class CheapStoreDB {
 
 					latestOrderNumber = 1;
 					//System.out.println("order number = " +  latestOrderNumber); //TODO delete when done
-				}else { // return the latest order 
-
+				} else { // return the latest order 
+					
 
 					int queriedOrderNumber = rs.getInt("num");
 //					queriedOrderNumber
-
 					String query2 = "select dateOfPurchase "
 							+ "from _445team9.Purchases "
 							+ "where orderNumber = " + queriedOrderNumber + " "
