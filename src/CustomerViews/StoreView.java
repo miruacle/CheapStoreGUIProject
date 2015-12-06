@@ -40,7 +40,7 @@ public class StoreView extends JPanel {
 	private UserAccount currentUser;
 	private int numberOfNoShowUps = 5;
 	private JPanel HolderPanel; 
-	
+
 
 	/**
 	 * Create the panel.

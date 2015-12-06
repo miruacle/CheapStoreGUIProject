@@ -2,17 +2,19 @@ package model;
 
 import java.awt.Image;
 
+import javax.swing.ImageIcon;
+
 public class UserAccount {
 	
 
-	private Image usersImage;
+	private ImageIcon usersImage;
 	private String typeOfAccount;
 	private String name;
 	private String address;
 	private String password;
 	
 	private String usersEmail;
-	public UserAccount(String usersEmail, Image usersImage, String typeOfAccount, String name, String address, String password) {
+	public UserAccount(String usersEmail, ImageIcon usersImage, String typeOfAccount, String name, String address, String password) {
 		super();
 		this.usersEmail = usersEmail;
 		this.usersImage = usersImage;
@@ -31,10 +33,10 @@ public class UserAccount {
 	public void setUsersEmail(String usersEmail) {
 		this.usersEmail = usersEmail;
 	}
-	public Image getUsersImage() {
+	public ImageIcon getUsersImage() {
 		return usersImage;
 	}
-	public void setUsersImage(Image usersImage) {
+	public void setUsersImage(ImageIcon usersImage) {
 		this.usersImage = usersImage;
 	}
 	public String getTypeOfAccount() {

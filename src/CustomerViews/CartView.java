@@ -35,6 +35,8 @@ import java.awt.Font;
 import java.awt.Image;
 
 import javax.swing.JList;
+import java.awt.GridLayout;
+import javax.swing.ScrollPaneConstants;
 
 public class CartView extends JPanel {
 
@@ -125,14 +127,67 @@ public class CartView extends JPanel {
 		purchaseSummaryPanel.setBounds(590, 194, 198, 209);
 		panel_2.add(purchaseSummaryPanel);
 		purchaseSummaryPanel.setLayout(new BorderLayout(0, 0));
-
-		JScrollPane scrollPane = new JScrollPane();
-		purchaseSummaryPanel.add(scrollPane, BorderLayout.CENTER);
-
-		JTextArea txtrFdfddfvvdfvdfv = new JTextArea();
-		txtrFdfddfvvdfvdfv.setText("fdfddfvvdfvdfv\nfdfddfvvdfvdfv\r\nfdfddfvvdfvdfv\r\n\r\nfdfddfvvdfvdfv\r\nfdfddfvvdfvdfv\r\nfdfddfvvdfvdfv\r\nfdfddfvvdfvdfv\r\nfdfddfvvdfvdfv\r\nfdfddfvvdfvdfv\r\nfdfddfvvdfvdfv\r\nv\r\nfdfddfvvdfvdfv\r\nfdfddfvvdfvdfv\r\nfdfddfvvdfvdfv\r\nfdfddfvvdfvdfv\r\nfdfddfvvdfvdfv\r\nv\r\n\r\nv\r\n");
-		scrollPane.setViewportView(txtrFdfddfvvdfvdfv);
-
+		
+		
+		String itemNamePriceSummary = "", itemCostPriceSummary = "", totalLabel = "Total: " ;
+		double totalCost = 0;
+		
+		if(itemsInOrderList.size() == 0){
+			itemNamePriceSummary = "Add Items to your cart :)";
+			totalLabel = "";
+			
+		}
+		for(int i = 0; i < itemsInOrderList.size(); i++){			
+			itemNamePriceSummary = itemNamePriceSummary +  itemsInOrderList.get(i).getName() + "\n";
+			itemCostPriceSummary = itemCostPriceSummary +  "$" + String.format("%.2f", itemsInOrderList.get(i).getPrice()) + "\n";
+			totalCost = totalCost + itemsInOrderList.get(i).getPrice();
+//			System.out.println("$" + String.format("%.2f", itemsInOrderList.get(i).getPrice()));
+		}
+		
+				
+		
+		JPanel panel_1 = new JPanel();
+				panel_1.setLayout(new BorderLayout(0, 0));
+		
+				JTextArea itemNameTextArea = new JTextArea();
+				itemNameTextArea.setEditable(false);
+				panel_1.add(itemNameTextArea, BorderLayout.CENTER);
+				itemNameTextArea.setWrapStyleWord(true);
+				itemNameTextArea.setLineWrap(true);
+				
+				
+				itemNameTextArea.setText(itemNamePriceSummary);
+				
+				
+				JScrollPane scrollPane = new JScrollPane(panel_1);
+				scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+				
+				JTextArea priceTextArea = new JTextArea();
+				priceTextArea.setEditable(false);
+				panel_1.add(priceTextArea, BorderLayout.EAST);
+				purchaseSummaryPanel.add(scrollPane, BorderLayout.CENTER);
+		
+				priceTextArea.setText(itemCostPriceSummary);
+				
+				JPanel panel_3 = new JPanel();
+				panel_1.add(panel_3, BorderLayout.SOUTH);
+				panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
+				
+				JTextArea totalLabeltextArea = new JTextArea();
+				totalLabeltextArea.setFont(new Font("Monospaced", Font.BOLD, 20));
+				totalLabeltextArea.setText(totalLabel);
+				totalLabeltextArea.setEditable(false);
+				panel_3.add(totalLabeltextArea);
+				
+				JTextArea totalAmounttextArea = new JTextArea();
+				totalAmounttextArea.setEditable(false);
+				totalAmounttextArea.setFont(new Font("Monospaced", Font.PLAIN, 20));
+				panel_3.add(totalAmounttextArea);
+				
+				if(itemsInOrderList.size() != 0){
+					totalAmounttextArea.setText("$" +  String.valueOf(totalCost));
+				}
+		
 		JLabel lblNewLabel = new JLabel("Your Estimated Total:");
 		lblNewLabel.setForeground(Color.BLACK);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 18));

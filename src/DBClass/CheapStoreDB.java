@@ -74,13 +74,23 @@ public class CheapStoreDB {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				String usersEmail = rs.getString("usersEmail");
-				Image usersImage = (Image) rs.getBlob("usersImage");
+				
+				
+				Blob blob = rs.getBlob("usersImage");
+				ImageIcon imageIcon = new ImageIcon(
+						blob.getBytes(1, (int)blob.length()));
+
+				ImageIcon image = imageIcon;
+				
+//				
+//				
+//				Image usersImage = (Image) rs.getBlob("usersImage");
 				String typeOfAccount = rs.getString("typeOfAccount");
 				String name = rs.getString("name");
 				String address = rs.getString("address");
 				String password = rs.getString("password");
 
-				UserAccount user = new UserAccount(usersEmail, usersImage, typeOfAccount, name, address, password);
+				UserAccount user = new UserAccount(usersEmail, image, typeOfAccount, name, address, password);
 				list.add(user);
 			}
 		} catch (SQLException e) {
@@ -95,6 +105,62 @@ public class CheapStoreDB {
 
 
 
+	
+	
+	
+	
+	/**
+	 * Returns a list of movie objects from the database.
+	 * @return list of movies
+	 * @throws SQLException
+	 */
+	public List<UserAccount> getUsersWhoPlacedOrders() throws SQLException {
+		if (conn == null) {
+			createConnection();
+		}
+		Statement stmt = null;
+		String query = " select usersEmail, usersImage, typeOfAccount, name, address, password  "
+				+ "from _445team9.Account "
+				+ "natural join _445team9.Purchases "
+				+ "where dateOfPurchase is NULL "
+				+ "group by usersEmail"; 
+
+		list = new ArrayList<UserAccount>();
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				String usersEmail = rs.getString("usersEmail");
+				
+				
+				Blob blob = rs.getBlob("usersImage");
+				ImageIcon imageIcon = new ImageIcon(
+						blob.getBytes(1, (int)blob.length()));
+
+				ImageIcon image = imageIcon;
+				
+				String typeOfAccount = rs.getString("typeOfAccount");
+				String name = rs.getString("name");
+				String address = rs.getString("address");
+				String password = rs.getString("password");
+
+				UserAccount user = new UserAccount(usersEmail, image, typeOfAccount, name, address, password);
+				list.add(user);
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return list;
+	}
+
+
+	
+	
+	
 
 	/**
 	 * Returns a list of movie objects from the database.
@@ -232,7 +298,7 @@ public class CheapStoreDB {
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				String s = rs.getString("usersEmail");
-				System.out.println(s);
+//				System.out.println(s);
 				if(rs.getString("usersEmail").equals(soughtUsersEmail)){
 
 					foundUsersEmail = true;	
@@ -314,7 +380,7 @@ public class CheapStoreDB {
 			}
 		}
 
-		System.out.println("And the orderNumber was "+ latestOrderNumber + " for " +soughtUsersEmail);
+//		System.out.println("And the orderNumber was "+ latestOrderNumber + " for " +soughtUsersEmail);
 
 		return latestOrderNumber;
 	}
@@ -347,7 +413,44 @@ public class CheapStoreDB {
 		}
 
 	}
+	
+	
+	
+	
+//
+//
+//update _445team9.Purchases set dateOfPurchase ="2015-06-22"
+//where  usersEmail  = 'a' 
+//and orderNumber = 4 
+//and dateOfPurchase IS NULL
 
+	
+	public void updatePurchase(String usersEmail, int orderNumber, String dateOfPayment) throws SQLException {
+
+		if (conn == null) {
+			createConnection();
+		}
+		Statement stmt = null;
+
+		String query = "update _445team9.Purchases set dateOfPurchase =\"" + dateOfPayment + "\" "
+				+ "where  usersEmail  = '"+ usersEmail +"' "
+				+ "and orderNumber = "+ orderNumber +" "
+				+ "and dateOfPurchase IS NULL";
+
+
+		try {
+			stmt = conn.createStatement();
+			int rs = stmt.executeUpdate(query);
+
+		} catch (SQLException e) {
+			System.out.println(e);
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+
+	}
 
 	/**
 	 * Filters the movie list to find the given title. Returns a list with the
