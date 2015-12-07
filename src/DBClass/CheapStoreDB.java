@@ -21,11 +21,12 @@ import java.util.Properties;
 
 import javax.swing.ImageIcon;
 
+import model.Inventory;
 import model.Item;
 import model.UserAccount;
 
 /**
- * A class that consists of the database operations to insert and update the Movie information.
+ * A class that consists of the database operations to insert and update the item information.
  * @author mmuppa
  *
  */
@@ -37,6 +38,7 @@ public class CheapStoreDB {
 	private static Connection conn;
 	private List<UserAccount> list;
 	private List<Item> itemsList;
+	private List<Inventory> inventoryList;
 
 
 	/**
@@ -56,8 +58,8 @@ public class CheapStoreDB {
 	}
 
 	/**
-	 * Returns a list of movie objects from the database.
-	 * @return list of movies
+	 * Returns a list of item objects from the database.
+	 * @return list of items
 	 * @throws SQLException
 	 */
 	public List<UserAccount> getUsers() throws SQLException {
@@ -110,8 +112,8 @@ public class CheapStoreDB {
 	
 	
 	/**
-	 * Returns a list of movie objects from the database.
-	 * @return list of movies
+	 * Returns a list of item objects from the database.
+	 * @return list of items
 	 * @throws SQLException
 	 */
 	public List<UserAccount> getUsersWhoPlacedOrders() throws SQLException {
@@ -163,8 +165,8 @@ public class CheapStoreDB {
 	
 
 	/**
-	 * Returns a list of movie objects from the database.
-	 * @return list of movies
+	 * Returns a list of item objects from the database.
+	 * @return list of items
 	 * @throws SQLException
 	 */
 	public List<Item> getItems() throws SQLException {
@@ -206,14 +208,60 @@ public class CheapStoreDB {
 		}
 		return itemsList;
 	}
+	
+	/**
+	 * Returns a list of item objects from the database.
+	 * @return list of items
+	 * @throws SQLException
+	 */
+	public List<Inventory> getInventory() throws SQLException {
+		if (conn == null) {
+			createConnection();
+		}
+		Statement stmt = null;
+		String query = "select description, image, inStock, itemId, name, price, totalAmountPurchased "
+				+ "from _445team9.Item "
+				+ "natural join _445team9.Inventory"; //_445team9.Item ";
+	
+
+		inventoryList = new ArrayList<Inventory>();
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				String description = rs.getString("description");
+				Blob blob = rs.getBlob("image");
+				ImageIcon imageIcon = new ImageIcon(
+						blob.getBytes(1, (int)blob.length()));
+
+				ImageIcon image = imageIcon; //(Image) rs.getBlob("image");
+				int inStock = rs.getInt("inStock");
+				int itemId = rs.getInt("itemId");
+				String name = rs.getString("name");
+				double price = rs.getDouble("price");
+				int totalAmountPurchased = rs.getInt("totalAmountPurchased");
+
+
+				Inventory inventory = new Inventory(itemId, name, description, image, price, inStock, totalAmountPurchased);
+				inventoryList.add(inventory);
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return inventoryList;
+	}
 
 
 
 	
 	
 	/**
-	 * Returns a list of movie objects from the database.
-	 * @return list of movies
+	 * Returns a list of item objects from the database.
+	 * @return list of items
 	 * @throws SQLException
 	 */
 	public List<Item> getItemsInOrder(String currentUsersEmail , int currentOrderNumber) throws SQLException {
@@ -384,11 +432,6 @@ public class CheapStoreDB {
 		return latestOrderNumber;
 	}
 	
-	
-	
-	
-	
-
 	public void InsertIntoOrder(String usersEmail, int currentOrderNumber, int itemId, int Quantity, Date dateOfPurchase)  throws SQLException {
 		if (conn == null) {
 			createConnection();
@@ -451,76 +494,5 @@ public class CheapStoreDB {
 
 	}
 
-	/**
-	 * Filters the movie list to find the given title. Returns a list with the
-	 * movie objects that match the title provided.
-	 * @param title
-	 * @return list of movies that contain the title.
-	 */
-	//	public List<UserAccount> getMovies(String title) {
-	//		List<UserAccount> filterList = new ArrayList<UserAccount>();
-	//		try {
-	//			list = getMovies();
-	//		} catch (SQLException e) {
-	//			e.printStackTrace();
-	//		}
-	//		for (UserAccount movie : list) {
-	//			if (movie.getTitle().toLowerCase().contains(title.toLowerCase())) {
-	//				filterList.add(movie);
-	//			}
-	//		}
-	//		return filterList;
-	//	}
 
-	/**
-	 * Adds a new movie to the table.
-	 * @param movie 
-	 */
-	//	public void addMovie(UserAccount movie) {
-	//		String sql = "insert into moviedb.Movies values " + "(?, ?, ?, ?, ?, null); ";
-	//
-	//		PreparedStatement preparedStatement = null;
-	//		try {
-	//			preparedStatement = conn.prepareStatement(sql);
-	//			preparedStatement.setString(1, movie.getTitle());
-	//			preparedStatement.setInt(2, movie.getYear());
-	//			preparedStatement.setInt(3, movie.getLength());
-	//			preparedStatement.setString(4, movie.getGenre());
-	//			preparedStatement.setString(5, movie.getStudioName());
-	//			preparedStatement.executeUpdate();
-	//		} catch (SQLException e) {
-	//			System.out.println(e);
-	//			e.printStackTrace();
-	//		} 
-	//	}
-
-	/**
-	 * Modifies the movie information corresponding to the index in the list.
-	 * @param row index of the element in the list
-	 * @param columnName attribute to modify
-	 * @param data value to supply
-	 */
-	//	public void updateMovie(int row, String columnName, Object data) {
-	//		
-	//		UserAccount movie = list.get(row);
-	//		String title = movie.getTitle();
-	//		int year = movie.getYear();
-	//		String sql = "update moviedb.Movies set " + columnName + " = ?  where title= ? and year = ? ";
-	//		System.out.println(sql);
-	//		PreparedStatement preparedStatement = null;
-	//		try {
-	//			preparedStatement = conn.prepareStatement(sql);
-	//			if (data instanceof String)
-	//				preparedStatement.setString(1, (String) data);
-	//			else if (data instanceof Integer)
-	//				preparedStatement.setInt(1, (Integer) data);
-	//			preparedStatement.setString(2, title);
-	//			preparedStatement.setInt(3, year);
-	//			preparedStatement.executeUpdate();
-	//		} catch (SQLException e) {
-	//			System.out.println(e);
-	//			e.printStackTrace();
-	//		} 
-	//		
-	//	}
 }

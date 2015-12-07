@@ -199,7 +199,7 @@ public class EmployeeBossNavigationMenu extends JPanel {
 			JButton inventoryButton = new JButton("Inventory");
 			inventoryButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					secondPane = new InventoryView();
+					secondPane = new InventoryView(currentUser);
 
 					panel_2.removeAll();
 					panel_2.add(secondPane);
